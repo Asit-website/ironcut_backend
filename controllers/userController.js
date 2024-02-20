@@ -284,5 +284,6 @@ module.exports={
     sendOtp,
     submitOtp,
     changePassword,
-    resetPassword
+    resetPassword,
+    verify
 }
