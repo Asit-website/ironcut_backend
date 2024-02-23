@@ -4,10 +4,10 @@ const {createType , editType , deleteType , getAllType} = require("../controller
 
 const router = express.Router();
 
-router.post('/createOrder',auth , createType );
+router.post('/createType',auth , createType );
 router.get("/getAllType" ,auth , getAllType);
 router.put("/editType" ,auth ,editType);
-router.delete("/deleteType" ,auth, deleteType);
+router.delete("/deleteType/:typeId" ,auth, deleteType);
 
 
 module.exports = router;
