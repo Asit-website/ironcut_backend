@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const OrderSchema = new mongoose.Schema(
   {
     client: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type:String ,
     },
     type: String,
     Date: {
@@ -20,6 +19,7 @@ const OrderSchema = new mongoose.Schema(
     Width: String,
     Weight: String,
     CuttingPrice: Number,
+    Diameter: Number
   },
   { timestamps: true }
 );
