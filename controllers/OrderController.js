@@ -64,3 +64,33 @@ exports.getCuttingPrice = async(req ,res)=>{
     }
 }
 
+exports.getOrders = async ({ id, query, page, perPage }) => {
+    let and = [];
+
+    if (id && id !== "" && id !== "undefined") {
+        and.push({ _id: id });
+    }
+
+    if (query && query !== "" && query !== "undefined") {
+        console.log(query);
+        and.push({ title: { $regex: query, $options: "i" } });
+    }
+
+    if (and.length === 0) {
+        and.push({});
+    }
+    // const count = await Project.count({ $and: and });
+    let data;
+
+    if (page && page !== "" && page !== "undefined") {
+        data = await Order.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
+    }
+    else
+    {
+        data = await Order.find({ $and: and });
+    }
+    
+    return { status: true, data };
+};
+
+
