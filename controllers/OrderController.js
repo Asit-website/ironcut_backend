@@ -1,65 +1,76 @@
 const Order = require("../models/Order");
+const { removeUndefined } = require("../util/util");
+exports.createOrder = async (req, res) => {
+    try {
 
-exports.createOrder = async(req ,res)=>{
-    try{
-
-        const {  clientName,
+        const { client,
             type,
             ironQuality,
-            diameter,
+            Diameter,
             quantity,
-            length,
-            height,
-            width,
-          weight,
-          cuttingPrice
+            Length,
+            Height,
+            Width,
+            Weight,
+            CuttingPrice
         } = req.body;
 
-         const orderDetail = await Order.create({client: clientName, type  , ironQuality , Length:length , Height :height, Width:width ,Weight:weight , CuttingPrice:cuttingPrice, quantity ,Diameter:diameter });
+        const orderDetail = await Order.create({
+            client,
+            type,
+            ironQuality,
+            Diameter,
+            quantity,
+            Length,
+            Height,
+            Width,
+            Weight,
+            CuttingPrice
+        });
 
-          return res.status(200).json({
-            status: true ,
-            message:"Successfuly createad" , 
+        return res.status(200).json({
+            status: true,
+            message: "Successfuly createad",
             orderDetail
-          })
+        })
 
 
-    } catch(error){
+    } catch (error) {
         console.log(error);
         return res.status(500).json({
-            status: false ,
-            message:"Internal server error "
+            status: false,
+            message: "Internal server error "
         })
     }
 }
 
-exports.getCuttingPrice = async(req ,res)=>{
-    try{
+exports.getCuttingPrice = async (req, res) => {
+    try {
 
-        const {Type ,diameter , length , quantity , height , weight} = req.body;
+        const { type, Diameter, Length, quantity, Height, Weight } = req.body;
 
-        let cuttingPrice;
+        let CuttingPrice;
 
-         if(Type === "Round"){
-              cuttingPrice = (diameter*diameter*length*quantity)/785;
-         }
-         else {
-            cuttingPrice = height * weight * quantity;  
-            console.log("cut" ,cuttingPrice);
-         } 
+        if (type === "Round") {
+            CuttingPrice = (Diameter * Diameter * Length * quantity) / 785;
+        }
+        else {
+            CuttingPrice = Height * Weight * quantity;
+            console.log("cut", CuttingPrice);
+        }
 
 
-          return res.status(200).json({
-            status:true ,
-            message:"Successfuly get" , 
-         cuttingPrice
-          })
+        return res.status(200).json({
+            status: true,
+            message: "Successfuly get",
+            CuttingPrice
+        })
 
-    } catch(error){
+    } catch (error) {
         console.log(error);
         return res.status(500).json({
-            status:false ,
-            message:"Internal server error"
+            status: false,
+            message: "Internal server error"
         })
     }
 }
@@ -85,12 +96,54 @@ exports.getOrders = async ({ id, query, page, perPage }) => {
     if (page && page !== "" && page !== "undefined") {
         data = await Order.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
     }
-    else
-    {
+    else {
         data = await Order.find({ $and: and });
     }
-    
+
     return { status: true, data };
 };
 
+exports.updateOrders = async ({
+    id,
+    client,
+    type,
+    ironQuality,
+    Diameter,
+    quantity,
+    Length,
+    Height,
+    Width,
+    Weight,
+    CuttingPrice
+}) => {
+    try {
+        let updateObj = removeUndefined({
+            client,
+            type,
+            ironQuality,
+            Diameter,
+            quantity,
+            Length,
+            Height,
+            Width,
+            Weight,
+            CuttingPrice
+        });
 
+        const updateOrder = await Order.findByIdAndUpdate(id, { $set: updateObj }, { new: true });
+
+        return { status: true, message: 'Order updated successfully', data: updateOrder };
+    }
+    catch (error) {
+        console.log(error);
+        return {
+            status: false,
+            message: "500"
+        }
+    }
+}
+
+exports.deleteOrdeers = async ({ id }) => {
+    const ans = await Order.findByIdAndDelete(id);
+    return { status: true, data: ans };
+};
