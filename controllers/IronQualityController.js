@@ -1,6 +1,6 @@
-const Type = require("../models/Type")
+const IronQuality = require("../models/IronQuality");
 const {removeUndefined} = require("../util/util");
-exports.createType = async(req ,res)=>{
+exports.createQuality = async(req ,res)=>{
     try{
 
         const {Name} = req.body;
@@ -12,7 +12,7 @@ exports.createType = async(req ,res)=>{
             })
         }
 
-        const typeDetails = await Type.create({Name: Name});
+        const typeDetails = await IronQuality.create({Name: Name});
 
         return res.status(200).json({
             status:true ,
@@ -25,13 +25,13 @@ exports.createType = async(req ,res)=>{
     }
 }
 
-exports.updateType = async ({id,Name}) => {
+exports.updateQuality = async ({id,Name}) => {
     try {
         let updateObj = removeUndefined({ Name });
 
-        const updateType = await Type.findByIdAndUpdate(id, { $set: updateObj }, { new: true });
+        const updateQuality = await IronQuality.findByIdAndUpdate(id, { $set: updateObj }, { new: true });
 
-        return { status: true, message: 'Subscription updated successfully', data: updateType };
+        return { status: true, message: 'IronQuality updated successfully', data: updateQuality };
     }
     catch (error) {
         console.log(error);
@@ -43,14 +43,14 @@ exports.updateType = async ({id,Name}) => {
 }
 
 
-exports.getAllType = async(req ,res)=>{
+exports.getAllQuality = async(req ,res)=>{
 try{
 
-   const allType = await Type.find({});
+   const allIronQuality = await IronQuality.find({});
 
    return res.status(200).json({
     status:true ,
-    allType
+    allIronQuality
    })
 
 } catch(error){
@@ -63,19 +63,19 @@ try{
 
 }
 
-exports.deleteType = async(req ,res)=>{
+exports.deleteIronQuality = async(req ,res)=>{
     try{
 
-        const {typeId} = req.params;
+        const {ironId} = req.params;
 
-        if(!typeId){
+        if(!ironId){
             return res.status(403).json({
                 status:false ,
             message:"Please send the type id"
             })
         }
 
-        const typeDetail = await Type.findByIdAndDelete({_id:typeId} , {new:true});
+        const typeDetail = await IronQuality.findByIdAndDelete({_id:ironId} , {new:true});
 
         return res.status(200).json({
             status:true ,

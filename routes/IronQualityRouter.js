@@ -1,17 +1,17 @@
 const express = require("express");
 const auth = require("../middleware/auth");
-const {createType , updateType , deleteType , getAllType} = require("../controllers/TypeController");
+const {createQuality , updateQuality , deleteIronQuality , getAllQuality} = require("../controllers/IronQualityController");
 
 const router = express.Router();
 
-router.post('/createType',auth , createType );
-router.get("/getAllType" ,auth , getAllType);
+router.post('/createQuality',auth , createQuality );
+router.get("/getAllQuality" ,auth , getAllQuality);
 // router.put("/editType" ,auth ,editType);
-router.delete("/deleteType/:typeId" ,auth, deleteType);
+router.delete("/deleteQuality/:ironId" ,auth, deleteIronQuality);
 
-router.put('/updateType/:id', async (req, res) => {
+router.put('/updateQuality/:id', async (req, res) => {
     try {
-        let data = await updateType({ ...req.body, id: req.params.id });
+        let data = await updateQuality({ ...req.body, id: req.params.id });
         if (!data.status) {
             return res.status(400).json(data);
         }
