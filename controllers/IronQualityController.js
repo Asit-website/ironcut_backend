@@ -16,7 +16,7 @@ exports.createQuality = async(req ,res)=>{
 
         return res.status(200).json({
             status:true ,
-            message:"Successfuly created the type" , 
+            message:"Successfuly created the quality" , 
             typeDetails
         })
 
