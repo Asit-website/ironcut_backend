@@ -84,23 +84,24 @@ exports.getOrders = async ({ id, query, page, perPage }) => {
 
     if (query && query !== "" && query !== "undefined") {
         console.log(query);
-        and.push({ title: { $regex: query, $options: "i" } });
+        and.push({ client: { $regex: query, $options: "i" } });
     }
 
     if (and.length === 0) {
         and.push({});
     }
-    // const count = await Project.count({ $and: and });
+    const count = await Order.countDocuments({ $and: and });
     let data;
 
     if (page && page !== "" && page !== "undefined") {
         data = await Order.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
     }
-    else {
+    else
+    {
         data = await Order.find({ $and: and });
     }
-
-    return { status: true, data };
+    
+    return { status: true, data, count };
 };
 
 exports.updateOrders = async ({
