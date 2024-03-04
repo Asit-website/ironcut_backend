@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/createOrder',auth , createOrder );
 router.post("/getCuttingPrice" , auth , getCuttingPrice);
+router.post("/getWeight", auth, )
 
 router.get('/getOrders', async (req, res) => {
     const data = await getOrders({ ...req.query });

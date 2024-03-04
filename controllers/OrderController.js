@@ -75,6 +75,37 @@ exports.getCuttingPrice = async (req, res) => {
     }
 }
 
+exports.getWeight = async (req, res) => {
+    try {
+        const { length, width, height } = req.body;
+        let weight;
+
+        if(type === "round"){
+            weight = (length * height)
+        }
+        else{
+            weight = (length * height * width);
+            console.log("wd", weight);
+        }
+
+        return res.status(200).json({
+            status: true,
+            message: "Successfuly get",
+            weight
+        })
+    }
+
+    
+
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            status: false,
+            message: "Internal server error"
+        })
+    }
+}
+
 exports.getOrders = async ({ id, query, page, perPage }) => {
     let and = [];
 
@@ -96,11 +127,10 @@ exports.getOrders = async ({ id, query, page, perPage }) => {
     if (page && page !== "" && page !== "undefined") {
         data = await Order.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
     }
-    else
-    {
+    else {
         data = await Order.find({ $and: and });
     }
-    
+
     return { status: true, data, count };
 };
 
