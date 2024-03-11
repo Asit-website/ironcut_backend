@@ -4,7 +4,7 @@ const {removeUndefined} = require("../util/util");
 exports.createQuality = async(req ,res)=>{
     try{
 
-        const {Name  , cuttingPrice} = req.body;
+        const {Name  , CuttingPrice} = req.body;
 
         console.log("name ",Name , cuttingPrice);
 
@@ -15,7 +15,7 @@ exports.createQuality = async(req ,res)=>{
             })
         }
 
-        const typeDetails = await IronQuality.create({Name: Name , CuttingPrice: cuttingPrice});
+        const typeDetails = await IronQuality.create({Name: Name , CuttingPrice: CuttingPriceuttingPrice});
         console.log("typeDetail ",typeDetails);
 
         return res.status(200).json({
@@ -29,9 +29,9 @@ exports.createQuality = async(req ,res)=>{
     }
 }
 
-exports.updateQuality = async ({id,Name}) => {
+exports.updateQuality = async ({id,Name,CuttingPrice}) => {
     try {
-        let updateObj = removeUndefined({ Name });
+        let updateObj = removeUndefined({ Name,CuttingPrice });
 
         const updateQuality = await IronQuality.findByIdAndUpdate(id, { $set: updateObj }, { new: true });
 
