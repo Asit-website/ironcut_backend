@@ -47,7 +47,7 @@ exports.createOrder = async (req, res) => {
 exports.getCuttingPrice = async (req, res) => {
     try {
 
-        const { type, Diameter, Length, quantity, Height, Weight } = req.body;
+        const { type, Diameter, Length, quantity, Height, Width } = req.body;
 
         let CuttingPrice;
 
@@ -55,7 +55,7 @@ exports.getCuttingPrice = async (req, res) => {
             CuttingPrice = (Diameter * Diameter * Length * quantity) / 785;
         }
         else {
-            CuttingPrice = Height * Weight * quantity;
+            CuttingPrice = Height * Width * quantity;
             console.log("cut", CuttingPrice);
         }
 
@@ -77,21 +77,21 @@ exports.getCuttingPrice = async (req, res) => {
 
 exports.getWeight = async (req, res) => {
     try {
-        const { length, width, height } = req.body;
-        let weight;
+        const {type, Length, Height, Width ,Diameter} = req.body;
+        let Weight;
 
-        if(type === "round"){
-            weight = (length * height)
+        if(type === "Round"){
+            Weight = (Diameter * Diameter * Length) / 162000
         }
         else{
-            weight = (length * height * width);
-            console.log("wd", weight);
+            Weight = (Length * Height * Width) / 127551
+            console.log("wd", Weight);
         }
 
         return res.status(200).json({
             status: true,
             message: "Successfuly get",
-            weight
+            Weight
         })
     }
 

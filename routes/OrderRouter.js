@@ -1,12 +1,12 @@
 const express = require("express");
 const auth = require("../middleware/auth");
-const {createOrder , getCuttingPrice, getOrders,updateOrders,deleteOrdeers} = require("../controllers/OrderController");
+const {createOrder , getCuttingPrice, getOrders,updateOrders,deleteOrdeers,getWeight} = require("../controllers/OrderController");
 
 const router = express.Router();
 
 router.post('/createOrder',auth , createOrder );
 router.post("/getCuttingPrice" , auth , getCuttingPrice);
-router.post("/getWeight", auth, )
+router.post("/getWeight", auth, getWeight );
 
 router.get('/getOrders', async (req, res) => {
     const data = await getOrders({ ...req.query });
