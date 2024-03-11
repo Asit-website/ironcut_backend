@@ -64,6 +64,10 @@ exports.getCuttingPrice = async (req, res) => {
   console.log("cuting", CuttingPrice);
 
         let cutPrice;
+        // let Height1 = Height/25;
+        // let Width1 = Width/25;
+        // let Length1 = Length/25;
+        // let Diameter1 = Diameter/25;
 
         if (type === "Round") {
             cutPrice = (Diameter * Diameter * Length * quantity) / 785;
