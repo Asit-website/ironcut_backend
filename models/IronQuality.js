@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const IronQualitySchema = new mongoose.Schema(
     {
         Name: String,
+        CuttingPrice: Number,
     }
 );
 

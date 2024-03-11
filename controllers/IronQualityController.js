@@ -1,9 +1,12 @@
 const IronQuality = require("../models/IronQuality");
 const {removeUndefined} = require("../util/util");
+
 exports.createQuality = async(req ,res)=>{
     try{
 
-        const {Name} = req.body;
+        const {Name  , cuttingPrice} = req.body;
+
+        console.log("name ",Name , cuttingPrice);
 
         if(!Name){
             return res.status(400).json({
@@ -12,7 +15,8 @@ exports.createQuality = async(req ,res)=>{
             })
         }
 
-        const typeDetails = await IronQuality.create({Name: Name});
+        const typeDetails = await IronQuality.create({Name: Name , CuttingPrice: cuttingPrice});
+        console.log("typeDetail ",typeDetails);
 
         return res.status(200).json({
             status:true ,

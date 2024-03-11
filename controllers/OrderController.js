@@ -1,5 +1,7 @@
 const Order = require("../models/Order");
+const IronQuality = require("../models/IronQuality");
 const { removeUndefined } = require("../util/util");
+
 exports.createOrder = async (req, res) => {
     try {
 
@@ -47,23 +49,43 @@ exports.createOrder = async (req, res) => {
 exports.getCuttingPrice = async (req, res) => {
     try {
 
-        const { type, Diameter, Length, quantity, Height, Width } = req.body;
+        const { type, Diameter, Length, quantity, Height, Width  , ironQuality} = req.body;
 
-        let CuttingPrice;
+         console.log("name",ironQuality);
+
+         const ironDetails = await IronQuality.findOne({Name: ironQuality});
+
+          if(ironDetails){
+              var {CuttingPrice} = ironDetails;
+
+          }
+ console.log("iron",ironDetails);
+
+  console.log("cuting", CuttingPrice);
+
+        let cutPrice;
 
         if (type === "Round") {
-            CuttingPrice = (Diameter * Diameter * Length * quantity) / 785;
+            cutPrice = (Diameter * Diameter * Length * quantity) / 785;
         }
         else {
-            CuttingPrice = Height * Width * quantity;
-            console.log("cut", CuttingPrice);
+            cutPrice = Height * Width * quantity;
+            console.log("cut", cutPrice);
         }
 
+          if(CuttingPrice && CuttingPrice !== ''){
+
+            cutPrice = cutPrice*CuttingPrice;
+          }
+        
+           console.log("cc",cutPrice);
+
+            cutPrice = cutPrice/25;
 
         return res.status(200).json({
             status: true,
             message: "Successfuly get",
-            CuttingPrice
+            CuttingPrice: cutPrice
         })
 
     } catch (error) {
