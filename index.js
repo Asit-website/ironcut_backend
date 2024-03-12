@@ -13,6 +13,7 @@ const qualityRouter = require("./routes/IronQualityRouter");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use("/user",userRouter);
 app.use("/order" , orderRouter);
 app.use("/type" ,typeRouter );
