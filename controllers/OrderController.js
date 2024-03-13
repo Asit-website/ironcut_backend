@@ -64,16 +64,16 @@ exports.getCuttingPrice = async (req, res) => {
   console.log("cuting", CuttingPrice);
 
         let cutPrice;
-        // let Height1 = Height/25;
-        // let Width1 = Width/25;
-        // let Length1 = Length/25;
+        let Height1 = Height/25;
+        let Width1 = Width/25;
+        let Length1 = Length/25;
         // let Diameter1 = Diameter/25;
 
         if (type === "Round") {
-            cutPrice = (Diameter * Diameter * Length * quantity) / 785;
+            cutPrice = (Diameter * Diameter  * quantity) / 785;
         }
         else {
-            cutPrice = Height * Width * quantity;
+            cutPrice = Height1 * Width1 * quantity;
             console.log("cut", cutPrice);
         }
 
@@ -84,7 +84,7 @@ exports.getCuttingPrice = async (req, res) => {
         
            console.log("cc",cutPrice);
 
-            cutPrice = Number((cutPrice/25).toFixed(2));
+            cutPrice = Math.ceil(cutPrice);
            
 
         return res.status(200).json({
