@@ -1,6 +1,6 @@
 const Order = require("../models/Order");
 const IronQuality = require("../models/IronQuality");
-const { removeUndefined } = require("../util/util");
+// const { removeUndefined } = require("../util/util");
 const User = require("../models/User");
 const Form = require("../models/FormItem")
 
@@ -16,7 +16,7 @@ exports.createOrder = async (req, res) => {
 
   for (const formDataItem of formdata) {
     totalQuantity += parseFloat(formDataItem.quantity);
-    totalWeight += parseFloat(formDataItem.Weight);
+    totalWeight += Number((formDataItem.Weight).toFixed(2));
     totalCuttingPrice += parseFloat(formDataItem.CuttingPrice);
   }
 
@@ -171,6 +171,7 @@ exports.getWeight = async (req, res) => {
         }
         else {
             Weight = Number(((Length * Height * Width) / 127551).toFixed(2));
+            console.log(Weight);
         }
 
         return res.status(200).json({
