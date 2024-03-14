@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Order = require("../models/Order");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
@@ -9,6 +10,17 @@ const verify = async ({ auth }) => {
     return { status: true };
 };
 
+const verifyOrderById = async ({ id,auth }) => {
+    if (!auth) {
+        Order.find({});
+    }
+    else{
+      let orderStaus =  Order.findById(id);
+      const orderStaus1 = orderStaus.finally
+      console.log(orderStaus);
+      return {status:true, orderStaus}
+    }
+};
 
 const getUsers = async ({ id, query, page, perPage }) => {
     // let and = [];
@@ -72,38 +84,7 @@ const login = async ({ email, password }) => {
     return { status: true, message: "Login success", token, user: emailCheck };
 };
 
-// const updateUser = async ({ userId, name, email, phone,categoryies, website, budget,location, aboutCompany, file, auth,twiter,facebook,linkdin,insta }) => {
-//     // if (!auth) {
-//     //     return { success: false, message: "Not Authorised" };
-//     // }
 
-//     console.log("email" ,email);
-
-
-//     // if (auth?.email !== email) {
-//         let checkUser = User.findOne({ email:email });
-//         console.log("checkuser" , checkUser);
-//         // if (checkUser) {
-//         //     return { status: false, data: ans, message: 'Email already taken' };
-//         // }
-//     // }
-//     let updateObj = User({ name, email,phone,categoryies, website, budget,location, aboutCompany,twiter,facebook,linkdin,insta});
-
-//     if (file && file !== "") {
-//         var result = await uploadToCloudinary(file.path);
-//         updateObj['img'] = {
-//             url: result.url,
-//             id: result.public_id
-//         };
-//     }
-
-//     // if (password && password !== "undefined" && password !== "") {
-//     //     password = await bcrypt.hash(password, 3);
-//     //     updateObj['password'] = password;
-//     // }
-//     let ans = await User.findByIdAndUpdate(userId, { $set: updateObj }, { new: true });
-//     return { status: true, data: ans, message: 'User Updated Successfull' };
-// };
 
 const updateUser = async ({ userId, name, email, phone, categoryies, website, budget, location, aboutCompany, file, auth, twiter, facebook, linkdin, insta, city }) => {
     try {
@@ -277,6 +258,16 @@ const resetPassword = async ({ password, userId }) => {
     return { status: true, message: "Password reset success" };
 };
 
+const resetpass1 = async () =>{
+    const transt = await  Order.aggregate([{
+        user:User._id,
+        client:User.client,
+        quality:User.ironQuality,
+    }]);  
+    
+    return {status:true, data: transt ,msg:"successfully fetch client information"}
+}
+
 module.exports={
     getUsers,
     signin,
@@ -285,5 +276,7 @@ module.exports={
     submitOtp,
     changePassword,
     resetPassword,
-    verify 
+    verify,
+    verifyOrderById,
+    resetpass1
 }

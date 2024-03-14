@@ -1,6 +1,6 @@
 const express = require("express");
 const auth = require("../middleware/auth");
-const {getUsers,signin,login,changePassword,resetPassword,submitOtp,sendOtp} = require("../controllers/userController");
+const {getUsers,signin,login,changePassword,resetPassword,submitOtp,sendOtp,verifyOrderById} = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -8,6 +8,13 @@ router.get('/verify', auth, async (req, res) => {
     const data = await verify({ auth: req.user });
     res.json(data);
 });
+
+router.get('/verifyOrder/:id', auth, async (req, res) => {
+    const data = await verifyOrderById({ auth: req.user });
+    res.json(data);  
+});
+
+
 
 router.get('/getUsers', async (req, res) => {
     const data = await getUsers({ ...req.query });

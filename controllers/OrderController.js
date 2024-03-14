@@ -49,43 +49,42 @@ exports.createOrder = async (req, res) => {
 exports.getCuttingPrice = async (req, res) => {
     try {
 
-        const { type, Diameter, Length, quantity, Height, Width  , ironQuality} = req.body;
+        const { type, Diameter, Length, quantity, Height, Width, ironQuality } = req.body;
 
-         console.log("name",ironQuality);
+        console.log("name", ironQuality);
 
-         const ironDetails = await IronQuality.findOne({Name: ironQuality});
+        const ironDetails = await IronQuality.findOne({ Name: ironQuality });
 
-          if(ironDetails){
-              var {CuttingPrice} = ironDetails;
+        if (ironDetails) {
+            var { CuttingPrice } = ironDetails;
 
-          }
- console.log("iron",ironDetails);
+        }
+        console.log("iron", ironDetails);
 
-  console.log("cuting", CuttingPrice);
+        console.log("cuting", CuttingPrice);
 
         let cutPrice;
-        let Height1 = Height/25;
-        let Width1 = Width/25;
-        let Length1 = Length/25;
-        // let Diameter1 = Diameter/25;
+        let Height1 = Height / 25;
+        let Width1 = Width / 25;
+
 
         if (type === "Round") {
-            cutPrice = (Diameter * Diameter  * quantity) / 785;
+            cutPrice = (Diameter * Diameter * quantity) / 785;
         }
         else {
             cutPrice = Height1 * Width1 * quantity;
             console.log("cut", cutPrice);
         }
 
-          if(CuttingPrice && CuttingPrice !== ''){
+        if (CuttingPrice && CuttingPrice !== '') {
 
-            cutPrice = cutPrice*CuttingPrice;
-          }
-        
-           console.log("cc",cutPrice);
+            cutPrice = cutPrice * CuttingPrice;
+        }
 
-            cutPrice = Math.ceil(cutPrice);
-           
+        console.log("cc", cutPrice);
+
+        cutPrice = Math.ceil(cutPrice);
+
 
         return res.status(200).json({
             status: true,
@@ -104,13 +103,13 @@ exports.getCuttingPrice = async (req, res) => {
 
 exports.getWeight = async (req, res) => {
     try {
-        const {type, Length, Height, Width ,Diameter} = req.body;
+        const { type, Length, Height, Width, Diameter } = req.body;
         let Weight;
 
-        if(type === "Round"){
+        if (type === "Round") {
             Weight = Number(((Diameter * Diameter * Length) / 162000).toFixed(2));
         }
-        else{
+        else {
             Weight = Number(((Length * Height * Width) / 127551).toFixed(2));
             console.log("wd", Weight);
         }
@@ -122,7 +121,7 @@ exports.getWeight = async (req, res) => {
         })
     }
 
-    
+
 
     catch (error) {
         console.log(error);
