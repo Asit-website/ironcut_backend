@@ -6,8 +6,6 @@ exports.createQuality = async(req ,res)=>{
 
         const {Name  , CuttingPrice} = req.body;
 
-        console.log("name ",Name , CuttingPrice);
-
         if(!Name){
             return res.status(400).json({
                 status: false,
@@ -16,7 +14,6 @@ exports.createQuality = async(req ,res)=>{
         }
 
         const typeDetails = await IronQuality.create({Name: Name , CuttingPrice: CuttingPrice});
-        console.log("typeDetail ",typeDetails);
 
         return res.status(200).json({
             status:true ,

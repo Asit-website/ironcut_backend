@@ -17,8 +17,7 @@ const verifyOrderById = async ({ id,auth }) => {
     else{
       let orderStaus =  Order.findById(id);
       const orderStaus1 = orderStaus.finally
-      console.log(orderStaus);
-      return {status:true, orderStaus}
+      return {status:true, orderStaus: orderStaus1}
     }
 };
 
@@ -89,7 +88,6 @@ const login = async ({ email, password }) => {
 const updateUser = async ({ userId, name, email, phone, categoryies, website, budget, location, aboutCompany, file, auth, twiter, facebook, linkdin, insta, city }) => {
     try {
 
-        console.log("file", file);
         // Check if the email is already taken by another user
         const checkUser = await User.findOne({ email: email });
         if (checkUser && checkUser._id != userId) {
@@ -188,7 +186,6 @@ const sendOtp = async ({ email }) => {
 
     transporter.sendMail(message, function (error) {
         if (error) {
-            console.log('Error occured');
             console.log(error.message);
             return;
         }
@@ -198,12 +195,10 @@ const sendOtp = async ({ email }) => {
 };
 
 const submitOtp = async ({ otp, otp1 }) => {
-    console.log(otp, otp1);
     if (otp.toString() !== otp1.toString()) {
 
         return { status: false, message: "Invalid Otp" };
     }
-    console.log(otp, otp1);
     return { status: true, message: "Success" };
 };
 
@@ -249,8 +244,6 @@ const resetPassword = async ({ password, userId }) => {
 
     transporter.sendMail(message, function (error) {
         if (error) {
-            console.log('Error occured');
-            console.log(error.message);
             return;
         }
     });

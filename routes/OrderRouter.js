@@ -1,6 +1,6 @@
 const express = require("express");
 const auth = require("../middleware/auth");
-const {createOrder , getCuttingPrice, getOrders,updateOrders,deleteOrdeers,getWeight} = require("../controllers/OrderController");
+const {createOrder , getCuttingPrice, getOrderPrimaryData, getOrders,updateOrders,deleteOrdeers,getWeight} = require("../controllers/OrderController");
 
 const router = express.Router();
 
@@ -13,9 +13,13 @@ router.get('/getOrders', async (req, res) => {
     res.json(data);
 });
 
-router.put('/updateOrders/:id', auth, async (req, res) => {
+router.post('/updateOrders/:orderId' , updateOrders);
+
+router.delete('/deleteOrders/:id/:userId' ,  async (req, res) => {
+
+     
     try {
-        let data = await updateOrders({ ...req.body, auth: req.user, id: req.params.id });
+        let data = await deleteOrdeers({id: req.params.id , userId: req.params.userId });
         if (!data.status) {
             return res.status(400).json(data);
         }
@@ -26,18 +30,21 @@ router.put('/updateOrders/:id', auth, async (req, res) => {
     }
 });
 
-router.delete('/deleteOrders/:id', async (req, res) => {
-    try {
-        let data = await deleteOrdeers({id: req.params.id });
-        if (!data.status) {
+router.get("/getOrderPrimaryDetail/:userId" ,  async(req ,res)=>{
+    try{
+        let data = await getOrderPrimaryData({userId: req.params.userId});
+
+         if(!data.status){
             return res.status(400).json(data);
-        }
-        res.json(data);
-    } catch (error) {
+         }
+
+          res.json(data);
+
+    } catch(error){
         console.log(error);
         res.status(400).json({ status: false, message: error.message });
     }
-});
+})
 
 
 module.exports = router;

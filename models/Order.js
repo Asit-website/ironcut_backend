@@ -5,21 +5,21 @@ const OrderSchema = new mongoose.Schema(
     client: {
       type:String ,
     },
-    type: String,
     Date: {
       type: Date,
       default: Date.now()
     },
-    ironQuality: {
-      type: String,
-    },
     quantity: Number,
-    Length: String,
-    Height: String,
-    Width: String,
-    Weight: String,
+    Weight: Number,
     CuttingPrice: Number,
-    Diameter: Number
+
+    form :[
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Form' // Reference to the Form model
+      }
+    ]
+
   },
   { timestamps: true }
 );

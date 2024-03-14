@@ -8,6 +8,7 @@ const mySchema =new mongoose.Schema({
     categoryies:String,
     confirmPassword: String,
     role: String,
+    completeOrder: Number ,
 //     project:[{
 //         type:mongoose.Schema.Types.ObjectId,
 //         ref:"Project",
