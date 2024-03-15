@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
 
 const TypeSchema = new mongoose.Schema(
-   {
-     Name: String ,
-
-}
+  {
+    Name: String,
+  }
 );
 
 const type = mongoose.model("Type", TypeSchema);

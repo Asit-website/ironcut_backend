@@ -1,13 +1,13 @@
 const express = require("express");
 const auth = require("../middleware/auth");
-const {createType , updateType , deleteType , getAllType} = require("../controllers/TypeController");
+const { createType, updateType, deleteType, getAllType } = require("../controllers/TypeController");
 
 const router = express.Router();
 
-router.post('/createType',auth , createType );
-router.get("/getAllType" ,auth , getAllType);
+router.post('/createType', auth, createType);
+router.get("/getAllType", auth, getAllType);
 // router.put("/editType" ,auth ,editType);
-router.delete("/deleteType/:typeId" ,auth, deleteType);
+router.delete("/deleteType/:typeId", auth, deleteType);
 
 router.put('/updateType/:id', async (req, res) => {
     try {

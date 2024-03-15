@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const OrderSchema = new mongoose.Schema(
   {
     client: {
-      type:String ,
+      type: String,
     },
     Date: {
       type: Date,
@@ -13,7 +13,7 @@ const OrderSchema = new mongoose.Schema(
     Weight: Number,
     CuttingPrice: Number,
 
-    form :[
+    form: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Form' // Reference to the Form model
