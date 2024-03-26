@@ -1,10 +1,11 @@
 const express = require("express");
 const auth = require("../middleware/auth");
-const {createOrder , getCuttingPrice, getOrderPrimaryData, getOrders,updateOrders,deleteOrdeers,getWeight} = require("../controllers/OrderController");
+const {createOrder , getCuttingPrice,createOrder2, getOrderPrimaryData, getOrders,updateOrders,deleteOrdeers,getWeight} = require("../controllers/OrderController");
 
 const router = express.Router();
 
 router.post('/createOrder',auth , createOrder );
+router.post('/createOrder/:id',auth , createOrder2 );
 router.post("/getCuttingPrice" , auth , getCuttingPrice);
 router.post("/getWeight", auth, getWeight );
 
