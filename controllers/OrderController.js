@@ -2,7 +2,7 @@ const Order = require("../models/Order");
 const IronQuality = require("../models/IronQuality");
 // const { removeUndefined } = require("../util/util");
 const User = require("../models/User");
-const Form = require("../models/FormItem")
+const Form = require("../models/FormItem");
 
 exports.createOrder = async (req, res) => {
   try{
@@ -220,8 +220,6 @@ exports.getOrders = async ({ id, query, page, perPage }) => {
 
     return { status: true, data, count };
 };
-
-
 
 exports.deleteOrdeers = async ({ id ,userId }) => {
 
