@@ -3,6 +3,8 @@ const Order = require("../models/Order");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
+require("dotenv").config();
+
 const verify = async ({ auth }) => {
     if (!auth) {
         return { status: false };

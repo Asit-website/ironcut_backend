@@ -4,15 +4,15 @@ const {getUsers,signin,login,changePassword,resetPassword,submitOtp,sendOtp,veri
 
 const router = express.Router();
 
-router.get('/verify', auth, async (req, res) => {
-    const data = await verify({ auth: req.user });
-    res.json(data);
-});
+// router.get('/verify', auth, async (req, res) => {
+//     const data = await verify({ auth: req.user });
+//     res.json(data);
+// });
 
-router.get('/verifyOrder/:id', auth, async (req, res) => {
-    const data = await verifyOrderById({ auth: req.user });
-    res.json(data);  
-});
+// router.get('/verifyOrder/:id', auth, async (req, res) => {
+//     const data = await verifyOrderById({ auth: req.user });
+//     res.json(data);  
+// });
 
 
 
