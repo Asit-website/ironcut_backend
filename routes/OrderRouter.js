@@ -1,6 +1,6 @@
 const express = require("express");
 const auth = require("../middleware/auth");
-const {createOrder , getCuttingPrice,createOrder2, getOrderPrimaryData, getOrders,updateOrders,deleteOrdeers,getWeight} = require("../controllers/OrderController");
+const {createOrder , getCuttingPrice,createOrder2,updateFormHandler,deleteForm,fechUserForm, getOrderPrimaryData, getOrders,updateOrders,deleteOrdeers,getWeight} = require("../controllers/OrderController");
 
 const router = express.Router();
 
@@ -9,12 +9,17 @@ router.post('/createOrder/:id',auth , createOrder2 );
 router.post("/getCuttingPrice" , auth , getCuttingPrice);
 router.post("/getWeight", auth, getWeight );
 
+router.delete("/deleteForm/:id/:orderId" , auth , deleteForm);
+
 router.get('/getOrders', async (req, res) => {
     const data = await getOrders({ ...req.query });
     res.json(data);
 });
 
 router.post('/updateOrders/:orderId' , updateOrders);
+
+router.get("/fetchUserForm/:id" ,auth , fechUserForm);
+router.post("/updateForm/:id/:orderId"  , updateFormHandler);
 
 router.delete('/deleteOrders/:id/:userId' ,  async (req, res) => {
 

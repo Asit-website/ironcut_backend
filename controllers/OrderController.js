@@ -305,3 +305,132 @@ exports.getOrderPrimaryData = async ({ userId }) => {
     };
   }
 };
+
+
+exports.deleteForm = async( req ,res)=>{
+
+   const {id , orderId} = req.params;
+
+   const formDetails = await Form.findByIdAndDelete(id);
+    
+
+   const orderDetails = await Order.updateMany(
+    { form: { $in: [id] } }, 
+    { $pull: { form: id } }, 
+    { multi: true } 
+  );
+
+ const updatedOrder = await Order.findById(orderId).populate("form");
+
+  const allFormDetails = updatedOrder.form;
+      
+  let totalQuantity = 0;
+let totalWeight = 0;
+let totalCuttingPrice = 0;
+
+for (const formDataItem of allFormDetails) {
+totalQuantity += parseFloat(formDataItem.quantity);
+totalWeight += Number(formDataItem.Weight);
+totalCuttingPrice += parseFloat(formDataItem.CuttingPrice);
+}
+
+
+ const updatingForm =await Order.findByIdAndUpdate((orderId) ,{
+     $set:{
+     quantity: totalQuantity , 
+     Weight: totalWeight , 
+     CuttingPrice: totalCuttingPrice
+     }
+ }  , {new:true})
+
+
+     return res.status(200).json({
+      status:true , 
+      message:"Successfult deleted "
+     })
+}
+
+
+exports.fechUserForm = async(req ,res)=>{
+  try{
+
+    const {id} = req.params;
+
+     const userForm = await Order.findById(id).populate("form");
+
+      return res.status(200).json({
+        status:true ,
+        message:"Successfuly  fetch" , 
+      data: userForm?.form
+      })
+      
+      
+
+  } catch(error){
+    console.log(error);
+  }
+}
+
+exports.updateFormHandler = async(req , res)=>{
+
+  const { formdata } = req.body;
+ const {id , orderId} = req.params;
+
+  //  new form create krna hai
+  const {
+    type,
+    ironQuality,
+    Width,
+    Diameter,
+    quantity,
+    Length,
+    Height,
+    Weight,
+    CuttingPrice,
+  } = formdata;
+
+
+  const updateObj = {
+    type,
+    ironQuality,
+    Width,
+    Diameter,
+    quantity,
+    Length,
+    Height,
+    Weight,
+    CuttingPrice,
+  };
+
+  const updatedForm = await Form.findByIdAndUpdate(id, updateObj, { new: true });
+
+  const updatedOrder = await Order.findById(orderId).populate("form");
+
+  const allFormDetails = updatedOrder.form;
+      
+  let totalQuantity = 0;
+let totalWeight = 0;
+let totalCuttingPrice = 0;
+
+for (const formDataItem of allFormDetails) {
+totalQuantity += parseFloat(formDataItem.quantity);
+totalWeight += Number(formDataItem.Weight);
+totalCuttingPrice += parseFloat(formDataItem.CuttingPrice);
+}
+
+
+ const updatingForm =await Order.findByIdAndUpdate((orderId) ,{
+     $set:{
+     quantity: totalQuantity , 
+     Weight: totalWeight , 
+     CuttingPrice: totalCuttingPrice
+     }
+ }  , {new:true})
+
+
+   return res.status(200).json({
+    status:true ,
+    updatedForm
+   })
+
+}
