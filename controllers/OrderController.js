@@ -262,19 +262,19 @@ exports.getOrders = async ({ id, query, page, perPage }) => {
   return { status: true, data, count };
 };
 
-exports.deleteOrdeers = async ({ id, userId }) => {
+exports.deleteOrdeers = async ({ id}) => {
   const ans = await Order.findByIdAndDelete(id);
 
   await User.findOneAndUpdate(
-    { _id: userId },
-    { $inc: { completeOrder: 1 } },
+    // { _id: userId },
+    // { $inc: { completeOrder: 1 } },
     { new: true }
   );
 
   return { status: true, data: ans };
 };
 
-exports.getOrderPrimaryData = async ({ userId }) => {
+exports.getOrderPrimaryData = async ({}) => {
   try {
     const totalOrder = await Order.find({});
 
@@ -287,7 +287,8 @@ exports.getOrderPrimaryData = async ({ userId }) => {
       Date: { $gte: twentyFourHoursAgo, $lte: currentDate },
     });
 
-    const userDetail = await User.findOne({ _id: userId });
+    // const userDetail = await User.findOne({ _id: userId });
+    const userDetail = await User.findOne();
 
     const completeOrder = userDetail.completeOrder;
 

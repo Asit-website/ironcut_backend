@@ -21,11 +21,11 @@ router.post('/updateOrders/:orderId' , updateOrders);
 router.get("/fetchUserForm/:id" ,auth , fechUserForm);
 router.post("/updateForm/:id/:orderId"  , updateFormHandler);
 
-router.delete('/deleteOrders/:id/:userId' ,  async (req, res) => {
+router.delete('/deleteOrders/:id' ,  async (req, res) => {
 
      
     try {
-        let data = await deleteOrdeers({id: req.params.id , userId: req.params.userId });
+        let data = await deleteOrdeers({id: req.params.id});
         if (!data.status) {
             return res.status(400).json(data);
         }
@@ -36,9 +36,25 @@ router.delete('/deleteOrders/:id/:userId' ,  async (req, res) => {
     }
 });
 
-router.get("/getOrderPrimaryDetail/:userId" ,  async(req ,res)=>{
+// router.get("/getOrderPrimaryDetail/:userId" ,  async(req ,res)=>{
+//     try{
+//         let data = await getOrderPrimaryData({userId: req.params.userId});
+
+//          if(!data.status){
+//             return res.status(400).json(data);
+//          }
+
+//           res.json(data);
+
+//     } catch(error){
+//         console.log(error);
+//         res.status(400).json({ status: false, message: error.message });
+//     }
+// })
+
+router.get("/getOrderPrimaryDetail" ,  async(req ,res)=>{
     try{
-        let data = await getOrderPrimaryData({userId: req.params.userId});
+        let data = await getOrderPrimaryData({});
 
          if(!data.status){
             return res.status(400).json(data);
