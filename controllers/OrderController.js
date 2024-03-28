@@ -262,12 +262,13 @@ exports.getOrders = async ({ id, query, page, perPage }) => {
   return { status: true, data, count };
 };
 
-exports.deleteOrdeers = async ({ id}) => {
+exports.deleteOrdeers = async ({id , userId}) => {
+
   const ans = await Order.findByIdAndDelete(id);
 
   await User.findOneAndUpdate(
-    // { _id: userId },
-    // { $inc: { completeOrder: 1 } },
+    { _id: userId },
+    { $inc: { completeOrder: 1 } },
     { new: true }
   );
 

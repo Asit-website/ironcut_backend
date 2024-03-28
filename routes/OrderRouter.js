@@ -21,11 +21,10 @@ router.post('/updateOrders/:orderId' , updateOrders);
 router.get("/fetchUserForm/:id"  , fechUserForm);
 router.post("/updateForm/:id/:orderId"  , updateFormHandler);
 
-router.delete('/deleteOrders/:id' ,  async (req, res) => {
+router.delete('/deleteOrders/:id/:userId' ,  async (req, res) => {
 
-     
     try {
-        let data = await deleteOrdeers({id: req.params.id});
+        let data = await deleteOrdeers({id: req.params.id , userId: req.params.userId});
         if (!data.status) {
             return res.status(400).json(data);
         }
