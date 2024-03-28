@@ -11,7 +11,11 @@ const FormItemSchema = new mongoose.Schema({
   Length: { type: Number, default: 0 }, // Set default value for Length
   Height: { type: Number, default: 0 }, // Set default value for Height
   Weight: Number,
-  CuttingPrice: Number
+  CuttingPrice: Number,
+  Date: {
+    type: Date,
+    default: Date.now()
+  },
 });
 
 const form = mongoose.model("Form", FormItemSchema);

@@ -18,7 +18,7 @@ router.get('/getOrders', async (req, res) => {
 
 router.post('/updateOrders/:orderId' , updateOrders);
 
-router.get("/fetchUserForm/:id" ,auth , fechUserForm);
+router.get("/fetchUserForm/:id"  , fechUserForm);
 router.post("/updateForm/:id/:orderId"  , updateFormHandler);
 
 router.delete('/deleteOrders/:id' ,  async (req, res) => {
