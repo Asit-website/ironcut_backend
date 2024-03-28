@@ -31,13 +31,13 @@ exports.createOrder = async (req, res) => {
         CuttingPrice ,});
         const orderDetailsId = orderDetails._id;
 
-        const orderCreate = await Order.create({client , quantity , Weight , CuttingPrice ,form:[orderDetailsId] });
+        const orderCreate = (await Order.create({client , quantity , Weight , CuttingPrice ,form:[orderDetailsId] }));
 
 
     return res.status(200).json({
       status: true,
       message: "Successfully Created ",
-      orderDetails
+      orderCreate
     });
   } catch (error) {
     console.log(error);
