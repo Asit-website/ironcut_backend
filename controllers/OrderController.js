@@ -11,6 +11,7 @@ exports.createOrder = async (req, res) => {
     //  new form create krna hai
     const {
       client,
+      orderNumber,
       type,
       ironQuality,
       Width,
@@ -21,8 +22,13 @@ exports.createOrder = async (req, res) => {
       Weight,
       CuttingPrice,
     } = formdata;
+
+    const orderNum = await Order.findOne({orderNumber});
+    if(orderNum){
+      return { status: false, message: 'User already exists' };
+    }
     
-    const orderDetails = await Form.create({client , type , ironQuality  ,    Width,
+    const orderDetails = await Form.create({client ,orderNumber, type , ironQuality  ,    Width,
         Diameter,
         quantity,
         Length,
@@ -31,7 +37,7 @@ exports.createOrder = async (req, res) => {
         CuttingPrice ,});
         const orderDetailsId = orderDetails._id;
 
-        const orderCreate = (await Order.create({client , quantity , Weight , CuttingPrice ,form:[orderDetailsId] }));
+        const orderCreate = (await Order.create({client ,orderNumber, quantity , Weight , CuttingPrice ,form:[orderDetailsId] }));
 
 
     return res.status(200).json({
