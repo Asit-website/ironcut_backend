@@ -23,18 +23,26 @@ exports.createOrder = async (req, res) => {
       CuttingPrice,
     } = formdata;
 
-    const orderNum = await Order.findOne({orderNumber});
+    const orderNum = await Order.findOne({orderNumber: orderNumber});
+    console.log('ordernum ',orderNum);
+
     if(orderNum){
-      return { status: false, message: 'User already exists' };
+       console.log("return ");
+      return res.status(403).json({
+        status: false ,
+        message:'Order Number already exit' , 
+        code: 403
+      })
     }
     
-    const orderDetails = await Form.create({client ,orderNumber, type , ironQuality  ,    Width,
+    const orderDetails = await Form.create({client ,orderNumber, type , ironQuality  , Width,
         Diameter,
         quantity,
         Length,
         Height,
         Weight,
         CuttingPrice ,});
+
         const orderDetailsId = orderDetails._id;
 
         const orderCreate = (await Order.create({client ,orderNumber, quantity , Weight , CuttingPrice ,form:[orderDetailsId] }));
