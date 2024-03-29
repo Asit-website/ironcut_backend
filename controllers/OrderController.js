@@ -30,7 +30,7 @@ exports.createOrder = async (req, res) => {
        console.log("return ");
       return res.status(403).json({
         status: false ,
-        message:'Order Number already exit' , 
+        message:'Order Number already exist' , 
         code: 403
       })
     }
