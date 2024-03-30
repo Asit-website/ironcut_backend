@@ -23,17 +23,17 @@ exports.createOrder = async (req, res) => {
       CuttingPrice,
     } = formdata;
 
-    const orderNum = await Order.findOne({orderNumber: orderNumber});
-    console.log('ordernum ',orderNum);
+    // const orderNum = await Order.findOne({orderNumber: orderNumber});
+    // console.log('ordernum ',orderNum);
 
-    if(orderNum){
-       console.log("return ");
-      return res.status(403).json({
-        status: false ,
-        message:'Order Number already exist' , 
-        code: 403
-      })
-    }
+    // if(orderNum){
+    //    console.log("return ");
+    //   return res.status(403).json({
+    //     status: false ,
+    //     message:'Order Number already exist' , 
+    //     code: 403
+    //   })
+    // }
     
     const orderDetails = await Form.create({client ,orderNumber, type , ironQuality  , Width,
         Diameter,
@@ -204,8 +204,13 @@ exports.getCuttingPrice = async (req, res) => {
     if (CuttingPrice && CuttingPrice !== "") {
       cutPrice = cutPrice * CuttingPrice;
     }
-
-    cutPrice = Math.ceil(cutPrice);
+    
+    if(cutPrice <= 5){
+      cutPrice = 5;
+    }
+    else{
+      cutPrice = Math.ceil(cutPrice);
+    }
 
     return res.status(200).json({
       status: true,
