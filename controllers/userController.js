@@ -72,6 +72,8 @@ const signin = async ({ name, email, password }) => {
     return { status: true, data: saveUser, message: 'User Registration Successfull' };
 };
 
+
+
 const login = async ({ email, password }) => {
     let emailCheck = await User.findOne({ email });
     if (!emailCheck) {
@@ -85,6 +87,40 @@ const login = async ({ email, password }) => {
     return { status: true, message: "Login success", token, user: emailCheck };
 };
 
+
+const createUser = async (req,res) =>{
+    
+    try {
+        const {name,email,password} = req.body;
+        const checkUser = await User.findOne({email:email});
+
+        if(checkUser){
+            return res.status(403).json({
+                status: false,
+                message:"email can not be same",
+                code:403
+            })
+        }
+
+        const pass = await bcrypt.hash(password, 10);
+
+        const user = await User.create({
+            name,
+            email,
+            password:pass,
+            role: 'ADMIN'
+        });
+
+        return res.status(200).json({
+            status:true ,
+            message:"Successfuly created the type" , 
+            user
+        })
+
+    } catch (error) {
+         console.log(error);
+    }
+}
 
 
 const updateUser = async ({ userId, name, email, phone, categoryies, website, budget, location, aboutCompany, file, auth, twiter, facebook, linkdin, insta, city }) => {
@@ -273,5 +309,6 @@ module.exports={
     resetPassword,
     verify,
     verifyOrderById,
-    resetpass1
+    resetpass1,
+    createUser
 }

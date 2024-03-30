@@ -1,6 +1,6 @@
 const express = require("express");
 const auth = require("../middleware/auth");
-const {getUsers,signin,login,changePassword,resetPassword,submitOtp,sendOtp,verifyOrderById} = require("../controllers/userController");
+const {getUsers,signin,login,changePassword,resetPassword,submitOtp,sendOtp,verifyOrderById,createUser} = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -69,4 +69,5 @@ router.put('/resetPassword/:userId', async (req, res) => {
     res.json(data);
 });
 
+router.post('/createUser',createUser);
 module.exports = router;
