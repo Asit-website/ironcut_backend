@@ -228,13 +228,13 @@ exports.getCuttingPrice = async (req, res) => {
 
 exports.getWeight = async (req, res) => {
   try {
-    const { type, Length, Height, Width, Diameter } = req.body;
+    const { type, Length, Height, Width, Diameter,quantity } = req.body;
     let Weight;
 
     if (type === "Round") {
-      Weight = Number(((Diameter * Diameter * Length) / 162000).toFixed(2));
+      Weight = Number(((Diameter * Diameter * Length * quantity) / 162000).toFixed(2));
     } else {
-      Weight = Number(((Length * Height * Width) / 127551).toFixed(2));
+      Weight = Number(((Length * Height * Width * quantity) / 127551).toFixed(2));
       console.log(Weight);
     }
 
