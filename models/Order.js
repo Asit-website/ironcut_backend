@@ -5,9 +5,9 @@ const OrderSchema = new mongoose.Schema(
     client: {
       type: String,
     },
-    orderNumber:{
-      type:Number
-    },
+    // orderNumber:{
+    //   type:Number
+    // },
     Date: {
       type: Date,
       default: Date.now()

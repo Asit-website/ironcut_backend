@@ -11,7 +11,7 @@ exports.createOrder = async (req, res) => {
     //  new form create krna hai
     const {
       client,
-      orderNumber,
+      // orderNumber,
       type,
       ironQuality,
       Width,
@@ -23,19 +23,22 @@ exports.createOrder = async (req, res) => {
       CuttingPrice,
     } = formdata;
 
-    const orderNum = await Order.findOne({orderNumber: orderNumber});
-    console.log('ordernum ',orderNum);
+    // const orderNum = await Order.findOne({orderNumber: orderNumber});
+    // console.log('ordernum ',orderNum);
 
-    if(orderNum){
-       console.log("return ");
-      return res.status(403).json({
-        status: false ,
-        message:'Order Number already exist' , 
-        code: 403
-      })
-    }
+    // if(orderNum){
+    //    console.log("return ");
+    //   return res.status(403).json({
+    //     status: false ,
+    //     message:'Order Number already exist' , 
+    //     code: 403
+    //   })
+    // }
     
-    const orderDetails = await Form.create({client ,orderNumber, type , ironQuality  , Width,
+    const orderDetails = await Form.create({client 
+      // ,orderNumber
+      ,
+       type , ironQuality  , Width,
         Diameter,
         quantity,
         Length,
@@ -45,7 +48,9 @@ exports.createOrder = async (req, res) => {
 
         const orderDetailsId = orderDetails._id;
 
-        const orderCreate = (await Order.create({client ,orderNumber, quantity , Weight , CuttingPrice ,form:[orderDetailsId] }));
+        const orderCreate = (await Order.create({client ,
+          // orderNumber,
+           quantity , Weight , CuttingPrice ,form:[orderDetailsId] }));
 
 
     return res.status(200).json({
