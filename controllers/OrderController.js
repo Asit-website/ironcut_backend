@@ -34,23 +34,27 @@ exports.createOrder = async (req, res) => {
     //     code: 403
     //   })
     // }
-    
-    const orderDetails = await Form.create({client 
+
+    const orderDetails = await Form.create({
+      client
       // ,orderNumber
       ,
-       type , ironQuality  , Width,
-        Diameter,
-        quantity,
-        Length,
-        Height,
-        Weight,
-        CuttingPrice ,});
+      type, ironQuality, Width,
+      Diameter,
+      quantity,
+      Length,
+      Height,
+      Weight,
+      CuttingPrice,
+    });
 
-        const orderDetailsId = orderDetails._id;
+    const orderDetailsId = orderDetails._id;
 
-        const orderCreate = (await Order.create({client ,
-          // orderNumber,
-           quantity , Weight , CuttingPrice ,form:[orderDetailsId] }));
+    const orderCreate = (await Order.create({
+      client,
+      // orderNumber,
+      quantity, Weight, CuttingPrice, form: [orderDetailsId]
+    }));
 
 
     return res.status(200).json({
@@ -67,10 +71,10 @@ exports.createOrder = async (req, res) => {
   }
 };
 
-exports.createOrder2 = async(req ,res)=>{
- const {id} = req.params;
+exports.createOrder2 = async (req, res) => {
+  const { id } = req.params;
 
-  const {formdata} = req.body;
+  const { formdata } = req.body;
 
   const {
     client,
@@ -84,47 +88,49 @@ exports.createOrder2 = async(req ,res)=>{
     Weight,
     CuttingPrice,
   } = formdata;
-  
-  const orderDetails = await Form.create({client , type , ironQuality  , Width,
-      Diameter,
-      quantity,
-      Length,
-      Height,
-      Weight,
-      CuttingPrice});
 
-      const updatedOrder = await Order.findByIdAndUpdate(
-        id,
-        { $push: { form: orderDetails._id } },
-        { new: true }
-      ).populate("form");
-      
+  const orderDetails = await Form.create({
+    client, type, ironQuality, Width,
+    Diameter,
+    quantity,
+    Length,
+    Height,
+    Weight,
+    CuttingPrice
+  });
 
-      const allFormDetails = updatedOrder.form;
-      
-         let totalQuantity = 0;
-    let totalWeight = 0;
-    let totalCuttingPrice = 0;
+  const updatedOrder = await Order.findByIdAndUpdate(
+    id,
+    { $push: { form: orderDetails._id } },
+    { new: true }
+  ).populate("form");
 
-      for (const formDataItem of allFormDetails) {
-      totalQuantity += parseFloat(formDataItem.quantity);
-      totalWeight += Number(formDataItem.Weight);
-      totalCuttingPrice += parseFloat(formDataItem.CuttingPrice);
+
+  const allFormDetails = updatedOrder.form;
+
+  let totalQuantity = 0;
+  let totalWeight = 0;
+  let totalCuttingPrice = 0;
+
+  for (const formDataItem of allFormDetails) {
+    totalQuantity += parseFloat(formDataItem.quantity);
+    totalWeight += Number(formDataItem.Weight);
+    totalCuttingPrice += parseFloat(formDataItem.CuttingPrice);
+  }
+
+
+  const updatingForm = await Order.findByIdAndUpdate((id), {
+    $set: {
+      quantity: totalQuantity,
+      Weight: totalWeight,
+      CuttingPrice: totalCuttingPrice
     }
+  }, { new: true })
 
-
-        const updatingForm =await Order.findByIdAndUpdate((id) ,{
-            $set:{
-            quantity: totalQuantity , 
-            Weight: totalWeight , 
-            CuttingPrice: totalCuttingPrice
-            }
-        }  , {new:true})
-
-        return res.status(200).json({
-            status: true,
-            message: "Successfully Created ",
-          });
+  return res.status(200).json({
+    status: true,
+    message: "Successfully Created ",
+  });
 
 }
 
@@ -209,11 +215,11 @@ exports.getCuttingPrice = async (req, res) => {
     if (CuttingPrice && CuttingPrice !== "") {
       cutPrice = cutPrice * CuttingPrice;
     }
-    
-    if(cutPrice <= 5){
+
+    if (cutPrice <= 5) {
       cutPrice = 5;
     }
-    else{
+    else {
       cutPrice = Math.ceil(cutPrice);
     }
 
@@ -233,7 +239,7 @@ exports.getCuttingPrice = async (req, res) => {
 
 exports.getWeight = async (req, res) => {
   try {
-    const { type, Length, Height, Width, Diameter,quantity } = req.body;
+    const { type, Length, Height, Width, Diameter, quantity } = req.body;
     let Weight;
 
     if (type === "Round") {
@@ -286,7 +292,7 @@ exports.getOrders = async ({ id, query, page, perPage }) => {
   return { status: true, data, count };
 };
 
-exports.deleteOrdeers = async ({id , userId}) => {
+exports.deleteOrdeers = async ({ id, userId }) => {
 
   const ans = await Order.findByIdAndDelete(id);
 
@@ -299,7 +305,7 @@ exports.deleteOrdeers = async ({id , userId}) => {
   return { status: true, data: ans };
 };
 
-exports.getOrderPrimaryData = async ({}) => {
+exports.getOrderPrimaryData = async ({ }) => {
   try {
     const totalOrder = await Order.find({});
 
@@ -333,74 +339,74 @@ exports.getOrderPrimaryData = async ({}) => {
 };
 
 
-exports.deleteForm = async( req ,res)=>{
+exports.deleteForm = async (req, res) => {
 
-   const {id , orderId} = req.params;
+  const { id, orderId } = req.params;
 
-   const formDetails = await Form.findByIdAndDelete(id);
-    
+  const formDetails = await Form.findByIdAndDelete(id);
 
-   const orderDetails = await Order.updateMany(
-    { form: { $in: [id] } }, 
-    { $pull: { form: id } }, 
-    { multi: true } 
+
+  const orderDetails = await Order.updateMany(
+    { form: { $in: [id] } },
+    { $pull: { form: id } },
+    { multi: true }
   );
 
- const updatedOrder = await Order.findById(orderId).populate("form");
+  const updatedOrder = await Order.findById(orderId).populate("form");
 
   const allFormDetails = updatedOrder.form;
-      
+
   let totalQuantity = 0;
-let totalWeight = 0;
-let totalCuttingPrice = 0;
+  let totalWeight = 0;
+  let totalCuttingPrice = 0;
 
-for (const formDataItem of allFormDetails) {
-totalQuantity += parseFloat(formDataItem.quantity);
-totalWeight += Number(formDataItem.Weight);
-totalCuttingPrice += parseFloat(formDataItem.CuttingPrice);
+  for (const formDataItem of allFormDetails) {
+    totalQuantity += parseFloat(formDataItem.quantity);
+    totalWeight += Number(formDataItem.Weight);
+    totalCuttingPrice += parseFloat(formDataItem.CuttingPrice);
+  }
+
+
+  const updatingForm = await Order.findByIdAndUpdate((orderId), {
+    $set: {
+      quantity: totalQuantity,
+      Weight: totalWeight,
+      CuttingPrice: totalCuttingPrice
+    }
+  }, { new: true })
+
+
+  return res.status(200).json({
+    status: true,
+    message: "Successfult deleted "
+  })
 }
 
 
- const updatingForm =await Order.findByIdAndUpdate((orderId) ,{
-     $set:{
-     quantity: totalQuantity , 
-     Weight: totalWeight , 
-     CuttingPrice: totalCuttingPrice
-     }
- }  , {new:true})
+exports.fechUserForm = async (req, res) => {
+  try {
 
+    const { id } = req.params;
 
-     return res.status(200).json({
-      status:true , 
-      message:"Successfult deleted "
-     })
-}
+    const userForm = await Order.findById(id).populate("form");
 
-
-exports.fechUserForm = async(req ,res)=>{
-  try{
-
-    const {id} = req.params;
-
-     const userForm = await Order.findById(id).populate("form");
-
-      return res.status(200).json({
-        status:true ,
-        message:"Successfuly  fetch" , 
+    return res.status(200).json({
+      status: true,
+      message: "Successfuly  fetch",
       data: userForm?.form
-      })
-      
-      
+    })
 
-  } catch(error){
+
+
+  } catch (error) {
     console.log(error);
   }
 }
 
-exports.updateFormHandler = async(req , res)=>{
+exports.updateFormHandler = async (req, res) => {
 
   const { formdata } = req.body;
- const {id , orderId} = req.params;
+  const { id, orderId } = req.params;
 
   //  new form create krna hai
   const {
@@ -433,30 +439,30 @@ exports.updateFormHandler = async(req , res)=>{
   const updatedOrder = await Order.findById(orderId).populate("form");
 
   const allFormDetails = updatedOrder.form;
-      
+
   let totalQuantity = 0;
-let totalWeight = 0;
-let totalCuttingPrice = 0;
+  let totalWeight = 0;
+  let totalCuttingPrice = 0;
 
-for (const formDataItem of allFormDetails) {
-totalQuantity += parseFloat(formDataItem.quantity);
-totalWeight += Number(formDataItem.Weight);
-totalCuttingPrice += parseFloat(formDataItem.CuttingPrice);
-}
-
-
- const updatingForm =await Order.findByIdAndUpdate((orderId) ,{
-     $set:{
-     quantity: totalQuantity , 
-     Weight: totalWeight , 
-     CuttingPrice: totalCuttingPrice
-     }
- }  , {new:true})
+  for (const formDataItem of allFormDetails) {
+    totalQuantity += parseFloat(formDataItem.quantity);
+    totalWeight += Number(formDataItem.Weight);
+    totalCuttingPrice += parseFloat(formDataItem.CuttingPrice);
+  }
 
 
-   return res.status(200).json({
-    status:true ,
+  const updatingForm = await Order.findByIdAndUpdate((orderId), {
+    $set: {
+      quantity: totalQuantity,
+      Weight: totalWeight,
+      CuttingPrice: totalCuttingPrice
+    }
+  }, { new: true })
+
+
+  return res.status(200).json({
+    status: true,
     updatedForm
-   })
+  })
 
 }
